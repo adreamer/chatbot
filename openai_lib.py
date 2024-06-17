@@ -1,5 +1,5 @@
 from langchain_openai import ChatOpenAI
-from langchain_openai import OpenAIEmbeddings
+from langchain_community.embeddings import OpenAIEmbeddings
 import streamlit as st
 
 class OpenAILib:
@@ -18,7 +18,6 @@ class OpenAILib:
         return llm
 
     def get_embeddings(self, model_name="text-embedding-ada-002"):
-        from langchain.embeddings import OpenAIEmbeddings
         embeddings = OpenAIEmbeddings(openai_api_key=self.openai_api_key, model=model_name)
         return embeddings
 
