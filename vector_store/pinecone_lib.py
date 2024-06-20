@@ -5,7 +5,7 @@ from langchain_community.document_loaders import PyPDFLoader
 
 from pinecone import Pinecone, ServerlessSpec
 from langchain_pinecone import PineconeVectorStore
-from openai_lib import OpenAILib
+from llm.openai_lib import OpenAILib
 
 import streamlit as st
 

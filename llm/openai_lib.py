@@ -2,6 +2,7 @@ from langchain_openai import ChatOpenAI
 from langchain_community.embeddings import OpenAIEmbeddings
 import streamlit as st
 
+
 class OpenAILib:
     def __init__(self):
         # Get an OpenAI API Key before continuing
@@ -20,4 +21,3 @@ class OpenAILib:
     def get_embeddings(self, model_name="text-embedding-ada-002"):
         embeddings = OpenAIEmbeddings(openai_api_key=self.openai_api_key, model=model_name)
         return embeddings
-

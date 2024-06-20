@@ -1,5 +1,5 @@
-from pinecone_lib import PineconeLib
-from openai_lib import OpenAILib
+from vector_store.pinecone_lib import PineconeLib
+from llm.openai_lib import OpenAILib
 
 vectorstore_lib = PineconeLib()
 llm = OpenAILib().get_llm()
