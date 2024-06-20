@@ -15,16 +15,16 @@ st.set_page_config(page_title="전자금융업 챗봇", page_icon="📖")
 st.title("📖 전자금융업 챗봇")
 
 # LLM 생성
-llm = OpenAILib().get_llm()
-#llm = BedrockLib().get_llm()
+#llm = OpenAILib().get_llm()
+llm = BedrockLib().get_llm()
 
 # 백터DB 생성
 vectorstore_lib = PineconeLib()
 
 # 채팅 기록용 메모리 생성
 msgs = StreamlitChatMessageHistory(key="langchain_messages")
-if len(msgs.messages) == 0:
-    msgs.add_ai_message("How can I help you?")
+# if len(msgs.messages) == 0:
+#     msgs.add_ai_message("How can I help you?")
 
 view_messages = st.expander("View the message contents in session state")
 

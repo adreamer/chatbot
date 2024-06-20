@@ -1,5 +1,4 @@
-from langchain_openai import ChatOpenAI
-from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 import streamlit as st
 
 
