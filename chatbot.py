@@ -4,6 +4,7 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 
 # 백터DB
 from vector_store.pinecone_lib import PineconeLib
+from vector_store.faiss_lib import FAISSLib
 
 # LLM
 from llm.openai_lib import OpenAILib
@@ -19,7 +20,7 @@ st.title("📖 전자금융업 챗봇")
 llm = BedrockLib().get_llm()
 
 # 백터DB 생성
-vectorstore_lib = PineconeLib()
+vectorstore_lib = FAISSLib()
 
 # 채팅 기록용 메모리 생성
 msgs = StreamlitChatMessageHistory(key="langchain_messages")
@@ -63,10 +64,10 @@ if prompt := st.chat_input():
     config = {"configurable": {"session_id": "any"}}
 
     # LLM 압축된 결과 받아오기
-    docs = vectorstore_lib.search_compressed(llm, prompt)
+    #docs = vectorstore_lib.search_compressed(llm, prompt)
 
     # 검색된 모든 문서 받아오기
-    #docs = vectorstore_lib.search(prompt)
+    docs = vectorstore_lib.search(prompt)
 
     response = chain_with_history.invoke({"question": prompt, "context": vectorstore_lib.format_docs(docs)}, config)
     st.chat_message("ai").write(response.content)
