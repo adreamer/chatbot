@@ -13,6 +13,9 @@ import time
 """
     Pinecone용 벡터DB 라이브러리
     Pinecone에 저장하고 retrieve하는 메소드 제공
+    
+    ~/.streamlit/secrets.toml에 pinecone key 저장
+    pinecone_api_key = ####
 """
 
 class PineconeLib:

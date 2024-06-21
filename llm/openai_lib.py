@@ -4,6 +4,9 @@ import streamlit as st
 """
     OpenAI용 LLM, 임베딩 라이브러리
     기본적으로 LLM은 GPT-4o, 임베딩은 text-embedding-3-small
+    
+    ~/.streamlit/secrets.toml에 openai key 저장
+    openai_api_key = ####
 """
 class OpenAILib:
     def __init__(self):
