@@ -8,6 +8,7 @@ from langchain_community.vectorstores import FAISS
 """
     FAISS용 벡터DB 라이브러리
     FAISS에 저장하고 retrieve하는 메소드 제공
+    기본으로 faiss_index 디렉토리에 파일로 관리하도록 함
 """
 class FAISSLib:
     def __init__(self, embeddings):
