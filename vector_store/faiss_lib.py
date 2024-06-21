@@ -4,13 +4,12 @@ from langchain.retrievers.document_compressors import LLMChainExtractor
 from langchain_community.document_loaders import PyPDFLoader
 
 from langchain_community.vectorstores import FAISS
-from llm.bedrock_lib import BedrockLib
 
 
 class FAISSLib:
-    def __init__(self):
+    def __init__(self, embeddings):
         self.index_name = "langchain-index"  # change if desired
-        self.embeddings = BedrockLib().get_embeddings()
+        self.embeddings = embeddings
         self.compressor = None
         self.compression_retriever = None
         self.init_vectorstore()
@@ -44,7 +43,8 @@ class FAISSLib:
         return self.vectorstore
 
     def store_docs(self, docs):
-        docsearch = self.vectorstore.from_documents(docs, embedding=self.embeddings, index_name=self.index_name)
+        new_vectorstore = FAISS.from_documents(docs, embedding=self.embeddings)
+        self.vectorstore.merge_from(new_vectorstore)
         self.vectorstore.save_local("faiss_index", index_name=self.index_name)
 
     def format_docs(self, docs):
@@ -64,3 +64,7 @@ class FAISSLib:
         for doc in compressed_docs:
             print(doc.page_content)
         return compressed_docs
+
+    def print_info(self):
+        print(self.vectorstore.docstore._dict)
+        print(f"총 count:{self.vectorstore.index.ntotal}")

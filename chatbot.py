@@ -2,28 +2,32 @@ from langchain_community.chat_message_histories import StreamlitChatMessageHisto
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, HumanMessagePromptTemplate
 from langchain_core.runnables.history import RunnableWithMessageHistory
 
+import streamlit as st
+
 USE_FAISS = True
 USE_BEDROCK = True
 USE_COMPRESSED_SEARCH = False
-
-# 백터DB
-if USE_FAISS:
-    from vector_store.faiss_lib import FAISSLib
-    vectorstore_lib = FAISSLib()
-else:
-    from vector_store.pinecone_lib import PineconeLib
-    vectorstore_lib = PineconeLib()
 
 
 # LLM
 if USE_BEDROCK:
     from llm.bedrock_lib import BedrockLib
-    llm = BedrockLib().get_llm()
+    llm_lib = BedrockLib()
+
 else:
     from llm.openai_lib import OpenAILib
-    llm = OpenAILib().get_llm()
+    llm_lib = OpenAILib()
 
-import streamlit as st
+llm = llm_lib.get_llm()
+
+# 백터DB
+if USE_FAISS:
+    from vector_store.faiss_lib import FAISSLib
+    vectorstore_lib = FAISSLib(llm_lib.get_embeddings())
+else:
+    from vector_store.pinecone_lib import PineconeLib
+    vectorstore_lib = PineconeLib(llm_lib.get_embeddings())
+
 
 st.set_page_config(page_title="전자금융업 챗봇", page_icon="📖")
 st.title("📖 전자금융업 챗봇")

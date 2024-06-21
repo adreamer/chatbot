@@ -5,19 +5,18 @@ from langchain_community.document_loaders import PyPDFLoader
 
 from pinecone import Pinecone, ServerlessSpec
 from langchain_pinecone import PineconeVectorStore
-from llm.openai_lib import OpenAILib
 
 import streamlit as st
 
 import time
 
 class PineconeLib:
-    def __init__(self):
+    def __init__(self, embeddings):
         self.pinecone_api_key = st.secrets.pinecone_api_key
         os.environ["PINECONE_API_KEY"] = self.pinecone_api_key
         self.index_name = "langchain-index"  # change if desired
         self.pc = Pinecone(api_key=self.pinecone_api_key)
-        self.embeddings = OpenAILib().get_embeddings()
+        self.embeddings = embeddings
         self.compressor = None
         self.compression_retriever = None
         self.init_vectorstore()

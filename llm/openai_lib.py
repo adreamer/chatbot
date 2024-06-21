@@ -17,6 +17,6 @@ class OpenAILib:
         llm = ChatOpenAI(api_key=self.openai_api_key, model=model_name, temperature=temperature)
         return llm
 
-    def get_embeddings(self, model_name="text-embedding-ada-002"):
+    def get_embeddings(self, model_name="text-embedding-3-small"):
         embeddings = OpenAIEmbeddings(openai_api_key=self.openai_api_key, model=model_name)
         return embeddings

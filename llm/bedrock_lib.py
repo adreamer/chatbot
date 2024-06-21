@@ -5,7 +5,7 @@ class BedrockLib:
     def __init__(self):
         return
 
-    def get_llm(self, model_name="anthropic.claude-3-sonnet-20240229-v1:0", temperature=0.0):
+    def get_llm(self, model_name="anthropic.claude-3-5-sonnet-20240620-v1:0", temperature=0.0):
         llm = ChatBedrock(
             model_id=model_name,
             model_kwargs={"temperature": temperature},
