@@ -2,25 +2,31 @@ from langchain_community.chat_message_histories import StreamlitChatMessageHisto
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, HumanMessagePromptTemplate
 from langchain_core.runnables.history import RunnableWithMessageHistory
 
+USE_FAISS = True
+USE_BEDROCK = True
+USE_COMPRESSED_SEARCH = False
+
 # 백터DB
-from vector_store.pinecone_lib import PineconeLib
-from vector_store.faiss_lib import FAISSLib
+if USE_FAISS:
+    from vector_store.faiss_lib import FAISSLib
+    vectorstore_lib = FAISSLib()
+else:
+    from vector_store.pinecone_lib import PineconeLib
+    vectorstore_lib = PineconeLib()
+
 
 # LLM
-from llm.openai_lib import OpenAILib
-from llm.bedrock_lib import BedrockLib
+if USE_BEDROCK:
+    from llm.bedrock_lib import BedrockLib
+    llm = BedrockLib().get_llm()
+else:
+    from llm.openai_lib import OpenAILib
+    llm = OpenAILib().get_llm()
 
 import streamlit as st
 
 st.set_page_config(page_title="전자금융업 챗봇", page_icon="📖")
 st.title("📖 전자금융업 챗봇")
-
-# LLM 생성
-#llm = OpenAILib().get_llm()
-llm = BedrockLib().get_llm()
-
-# 백터DB 생성
-vectorstore_lib = FAISSLib()
 
 # 채팅 기록용 메모리 생성
 msgs = StreamlitChatMessageHistory(key="langchain_messages")
@@ -63,11 +69,12 @@ if prompt := st.chat_input():
     # Note: new messages are saved to history automatically by Langchain during run
     config = {"configurable": {"session_id": "any"}}
 
-    # LLM 압축된 결과 받아오기
-    #docs = vectorstore_lib.search_compressed(llm, prompt)
-
-    # 검색된 모든 문서 받아오기
-    docs = vectorstore_lib.search(prompt)
+    if USE_COMPRESSED_SEARCH:
+        # LLM 압축된 결과 받아오기
+        docs = vectorstore_lib.search_compressed(llm, prompt)
+    else:
+        # 검색된 모든 문서 받아오기
+        docs = vectorstore_lib.search(prompt)
 
     response = chain_with_history.invoke({"question": prompt, "context": vectorstore_lib.format_docs(docs)}, config)
     st.chat_message("ai").write(response.content)

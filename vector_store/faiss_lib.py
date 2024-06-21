@@ -6,6 +6,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.vectorstores import FAISS
 from llm.bedrock_lib import BedrockLib
 
+
 class FAISSLib:
     def __init__(self):
         self.index_name = "langchain-index"  # change if desired
@@ -34,13 +35,14 @@ class FAISSLib:
 
     def init_vectorstore(self):
         if os.path.exists(f"faiss_index/{self.index_name}.faiss"):
-            self.vectorstore = FAISS.load_local("faiss_index", embeddings=self.embeddings, index_name=self.index_name, allow_dangerous_deserialization=True)
+            self.vectorstore = FAISS.load_local("faiss_index", embeddings=self.embeddings, index_name=self.index_name,
+                                                allow_dangerous_deserialization=True)
         else:
             self.vectorstore = FAISS.from_texts(["text"], embedding=self.embeddings)
             self.vectorstore.save_local("faiss_index", index_name=self.index_name)
 
         return self.vectorstore
-    
+
     def store_docs(self, docs):
         docsearch = self.vectorstore.from_documents(docs, embedding=self.embeddings, index_name=self.index_name)
         self.vectorstore.save_local("faiss_index", index_name=self.index_name)
@@ -54,7 +56,7 @@ class FAISSLib:
         for doc in docs:
             print(doc.page_content)
         return docs
-    
+
     def search_compressed(self, llm, question):
         self.init_compresser(llm)
         compressed_docs = self.compression_retriever.invoke(question)
