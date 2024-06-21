@@ -1,7 +1,10 @@
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 import streamlit as st
 
-
+"""
+    OpenAI용 LLM, 임베딩 라이브러리
+    기본적으로 LLM은 GPT-4o, 임베딩은 text-embedding-3-small
+"""
 class OpenAILib:
     def __init__(self):
         # Get an OpenAI API Key before continuing
