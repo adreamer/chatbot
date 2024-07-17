@@ -4,12 +4,10 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 
 import streamlit as st
 
-"""
-    메인 챗봇 스크립트
-    streamlit run chatbot.py 로 실행
-"""
+#    메인 챗봇 스크립트
+#    streamlit run chatbot.py 로 실행
 
-USE_FAISS = True  # FAISS or Pinecone
+SELECTED_STORE = "BEDROCK"  # FAISS or PINECONE or BEDROCK
 USE_BEDROCK = True  # Bedrock or OpenAI
 USE_COMPRESSED_SEARCH = False  # LLM Compressed or 전체 검색 결과
 
@@ -26,12 +24,15 @@ else:
 llm = llm_lib.get_llm()
 
 # 백터DB 생성
-if USE_FAISS:
+if SELECTED_STORE == "FAISE":
     from vector_store.faiss_lib import FAISSLib
     vectorstore_lib = FAISSLib(llm_lib.get_embeddings())
-else:
+elif SELECTED_STORE == "PINECONE":
     from vector_store.pinecone_lib import PineconeLib
     vectorstore_lib = PineconeLib(llm_lib.get_embeddings())
+else:
+    from vector_store.bedrockkb_lib import BedrockKbLib
+    vectorstore_lib = BedrockKbLib()
 
 
 st.set_page_config(page_title="전자금융업 챗봇", page_icon="📖")
