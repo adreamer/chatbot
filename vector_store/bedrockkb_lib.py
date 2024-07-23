@@ -41,6 +41,9 @@ class BedrockKbLib:
             base_compressor=self.compressor, base_retriever=self.retriever
         )
 
+    def format_docs(self, docs):
+        return '\n\n'.join([d.page_content for d in docs])
+
     def search(self, question):
         docs = self.retriever.invoke(question)
         print(len(docs))
